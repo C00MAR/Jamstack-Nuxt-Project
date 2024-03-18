@@ -5,6 +5,7 @@ export interface Track {
     id: number
     title: string
     artist: string
+    slug: string
     album: string
     albumImageUrl: Image
     duration: number
