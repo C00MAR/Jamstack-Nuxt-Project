@@ -1,6 +1,3 @@
 <template>
-    <div>
-        ABOUT
-        <card />
-    </div>
+    ABOUT PAGE
 </template>

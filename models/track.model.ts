@@ -1,4 +1,5 @@
 import type { Playlist } from '~/models/Playlist.model';
+import type { Style } from '~/models/Style.model';
 import type { Image, Meta } from '~/models/Strapi.model';
 
 export interface Track {
@@ -12,6 +13,7 @@ export interface Track {
     mp3Url: string
     oggUrl: string
     playlist: Array<Playlist>
+    style: Style[]
 }
 
 export interface TracksResponse {
@@ -21,4 +23,5 @@ export interface TracksResponse {
 
 export interface TrackResponse {
     data: Track
+    meta: Meta
 }
