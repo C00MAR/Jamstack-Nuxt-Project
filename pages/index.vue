@@ -40,19 +40,42 @@ const addFilter = (filter: string) => {
     } else {
         filters.value = filters.value.filter((f) => f !== filter)
     }
-    
+
     tracksRefresh()
 }
 
+// const filteredTracks = computed(() => {
+//     if (!filters.value.length) {
+//         return tracks.value.data
+//     }
+
+//     return tracks?.value?.data.filter((track) => {
+//         return track?.styles?.some((style) => filters.value.includes(style.name))
+//     })
+// })
+
 const filteredTracks = computed(() => {
-    if (!filters.value.length) {
-        return tracks.value.data
+    let tracksFiltered = tracks.value.data;
+
+    if (filters.value.length) {
+        tracksFiltered = tracksFiltered.filter((track) => {
+            return track?.styles?.some((style) => filters.value.includes(style.name));
+        });
     }
 
-    return tracks?.value?.data.filter((track) => {
-        return track?.styles?.some((style) => filters.value.includes(style.name))
-    })
-})
+    if (searchQuery.value) {
+        const lowerSearchQuery = searchQuery.value.toLowerCase();
+        tracksFiltered = tracksFiltered.filter((track) => {
+            return (
+                track.title.toLowerCase().includes(lowerSearchQuery) ||
+                track.artist.toLowerCase().includes(lowerSearchQuery)
+            );
+        });
+    }
+
+    return tracksFiltered;
+});
+
 </script>
 
 <template>
