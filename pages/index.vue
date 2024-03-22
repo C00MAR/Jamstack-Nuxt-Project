@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { StylesResponse } from "~/models/style.model";
 
-const { find } = useStrapi()
-const filters = ref<String[]>([])
-const page = ref(1)
-const pageSize = ref(3)
+const { find } = useStrapi();
+const filters = ref<String[]>([]);
 const searchQuery = ref('');
+const page = ref(1);
+const pageSize = ref(2);
 
 const { data: styles, pending: stylesPending, error: stylesError } = await useAsyncData('styles', async () => {
     return await find<StylesResponse>('styles', {
@@ -44,16 +44,6 @@ const addFilter = (filter: string) => {
     tracksRefresh()
 }
 
-// const filteredTracks = computed(() => {
-//     if (!filters.value.length) {
-//         return tracks.value.data
-//     }
-
-//     return tracks?.value?.data.filter((track) => {
-//         return track?.styles?.some((style) => filters.value.includes(style.name))
-//     })
-// })
-
 const filteredTracks = computed(() => {
     let tracksFiltered = tracks.value.data;
 
@@ -75,44 +65,122 @@ const filteredTracks = computed(() => {
 
     return tracksFiltered;
 });
-
 </script>
 
 <template>
-    <div>
-        <input type="text" v-model="searchQuery" placeholder="Filter tracks by title or track...">
+    <div class="container">
+        <div class="filter">
+            <input type="text" v-model="searchQuery" placeholder="Filter tracks by title or track...">
 
-        <div v-if="stylesPending">Loading Styles...</div>
-        <div v-else-if="stylesError">Error: {{ stylesError.message }}</div>
-        <div v-else>
-            <button v-for="style in styles" :key="style.slug"
-                :class="filters.includes(style.name) ? 'bg-gray-900' : 'bg-white'" class="text-black"
-                @click="addFilter(style.name)">
-                {{ style.name }}
-            </button>
+            <div class="stylecontainer">
+                <div class="loading" v-if="stylesPending">Loading Styles...</div>
+                <div class="error" v-else-if="stylesError">Error: {{ stylesError.message }}</div>
+                <div class="style" v-else>
+                    <button v-for="style in styles" :key="style.slug"
+                        :class="filters.includes(style.name) ? 'active' : 'desactive'"
+                        @click="addFilter(style.name)">
+                        {{ style.name }}
+                    </button>
+                </div>
+            </div>
         </div>
 
-        <div v-if="tracksPending">Loading Tracks...</div>
-        <div v-else-if="tracksError">Error: {{ tracksError.message }}</div>
-        <div v-else>
-            <div v-for="track in filteredTracks" :key="track.id">
-                {{ track.title }}
-                {{ track.artist }}
-                <template v-if="track.styles">
-                    {{ track.styles.map(style => style.name).join(', ') }}
-                </template>                
-                <img :src="track.cover.url" alt="Cover" style="width: 5vw;"/>
-                <a :href="'/tracks/' + track.slug">Go to Track</a>
+        <div class="trackcontainer">
+            <div class="loading" v-if="tracksPending">Loading Tracks...</div>
+            <div class="error" v-else-if="tracksError">Error: {{ tracksError.message }}</div>
+            <div class="track" v-else>
+                <card
+                    v-for="track in filteredTracks" 
+                    :key="track.id"
+                    :track="track"
+                    class="cardtrack"
+                />
             </div>
         </div>
 
         <UPagination
-            v-if="tracks?.meta"
+            v-if="tracks?.meta && tracks?.meta.pagination.pageCount > 1"
             v-model="page"
-            :page-count="tracks.meta.pagination.pageCount"
+            class="pagination"
+            :page-count="tracks?.meta.pagination.pageSize"
             :total="tracks?.meta.pagination.total"
         />
     </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0 3vw;
+
+    .filter {
+        display: flex;
+        gap: 2rem;
+
+        input {
+            padding: 2vh 16vw 2vh 2vw;
+            border-radius: 0.2rem;
+            width: 66vw;
+        }
+
+        .stylecontainer {
+            display: flex;
+            gap: 1rem;
+            width: 33vw;
+
+            .style {
+                display: flex;
+                width: 100%;
+                gap: 1rem;
+                justify-content: space-around;
+                flex-direction: row;
+
+                button {
+                    width: 100%;
+                    padding: 1vh 2vw;
+                    border-radius: 0.2rem;
+                    background-color: #f0f0f0;
+                    cursor: pointer;
+
+                    &.active {
+                        background-color: #ff0000;
+                        color: #ffffff;
+                    }
+
+                    &.desactive {
+                        background-color: #f0f0f0;
+                        color: #000000;
+                    }
+                }
+            }
+        }
+    }
+
+    .trackcontainer {
+        margin-top: 5vh;
+
+        .track {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            align-items: center;
+            justify-content: space-between;
+
+            .cardtrack {
+                border: 1px solid #E6E6E6;
+                width: 49%;
+                height: 50vh;
+                border-radius: 0.2rem;
+                display: flex;
+            }
+        }
+    }
+
+    .pagination {
+        justify-content: center;
+        filter: saturate(0)
+    }
+}
+</style>

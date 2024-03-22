@@ -9,11 +9,11 @@ export interface Style {
 }
 
 export interface StyleResponse {
-    data: Event
+    data: Style
     meta: Meta
 }
 
 export interface StylesResponse {
-    data: Event[]
+    data: Style[]
     meta: Meta
 }

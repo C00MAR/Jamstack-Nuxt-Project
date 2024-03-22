@@ -16,7 +16,7 @@ const { data, pending, error } = await useAsyncData('tracks', async () => {
         <div v-if="pending">Chargement des pistes...</div>
         <div v-else-if="error">Une erreur s'est produite : {{ error }}</div>
         <div v-else>
-            <card
+            <!-- <card
                 v-for="track in data"
                 :key="track.id"
                 :title="track.title"
@@ -24,7 +24,7 @@ const { data, pending, error } = await useAsyncData('tracks', async () => {
                 :coverUrl="track.cover.url"
                 :slug="track.slug"
                 :createDate="track.created_at"
-            />
+            /> -->
         </div>
     </div>
 </template>
