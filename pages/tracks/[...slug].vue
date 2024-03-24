@@ -18,8 +18,8 @@ const { data: track, pending } = useAsyncData('track', () => findOne<{
         <h1 class="title">{{ track.data.title }}</h1>
         <p class="linear">by</p>
         <p class="artist">{{ track.data.artist }}</p>
-        <p class="linear">the</p>
-        <p class="date">{{ track.data.createthe }}</p>
+        <p class="linear" v-if="track.data.createthe">the</p>
+        <p class="date" v-if="track.data.createthe">{{ track.data.createthe }}</p>
     </div>
 </template>
 
