@@ -8,12 +8,9 @@ export interface Track {
     artist: string
     slug: string
     album: string
-    albumImageUrl: Image
-    duration: number
-    mp3Url: string
-    oggUrl: string
     playlist: Array<Playlist>
     style: Style[]
+    createthe: Date
 }
 
 export interface TracksResponse {

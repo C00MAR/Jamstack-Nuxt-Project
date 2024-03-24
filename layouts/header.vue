@@ -5,7 +5,7 @@
             <div class="link">
                 <nuxt-link to="/">Home</nuxt-link>
                 <nuxt-link to="/about">About</nuxt-link>
-                <nuxt-link to="/product">Product</nuxt-link>
+                <nuxt-link to="/playlist">Playlist</nuxt-link>
             </div>
             <div class="git">
                 <a href="https://github.com/C00MAR/Jamstack-Strapi-Project" target="_blank">Back</a> / 
@@ -29,6 +29,7 @@ body {
     background-color: rgb(0, 0, 0);
     color: rgb(230, 230, 230);
     font-family: 'PP Neue Montreal', sans-serif;
+    cursor: crosshair;
 }
 
 h1 {

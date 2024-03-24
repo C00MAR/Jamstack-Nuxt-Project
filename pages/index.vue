@@ -118,17 +118,18 @@ const filteredTracks = computed(() => {
     .filter {
         display: flex;
         gap: 2rem;
+        justify-content: space-between;
 
         input {
             padding: 2vh 16vw 2vh 2vw;
             border-radius: 0.2rem;
-            width: 66vw;
+            width: -webkit-fill-available;
         }
 
         .stylecontainer {
             display: flex;
             gap: 1rem;
-            width: 33vw;
+            width: fit-content;
 
             .style {
                 display: flex;
@@ -143,15 +144,21 @@ const filteredTracks = computed(() => {
                     border-radius: 0.2rem;
                     background-color: #f0f0f0;
                     cursor: pointer;
+                    transition: all 0.3s ease;
 
                     &.active {
-                        background-color: #ff0000;
-                        color: #ffffff;
+                        border: 1px solid #E6E6E6;
+                        background-color: transparent;
+                        color: #E6E6E6;
                     }
 
                     &.desactive {
-                        background-color: #f0f0f0;
+                        background-color: #E6E6E6;
                         color: #000000;
+                    }
+
+                    &:hover {
+                        letter-spacing: 3px;
                     }
                 }
             }
