@@ -36,6 +36,8 @@ const { data: track, pending } = useAsyncData('track', () => findOne<{
     margin-left: auto;
     margin-right: auto;
     transition: all 0.5s;
+    width: 20%;
+    min-width: min-content;
 
     .title, .artist, .date{
         padding: 0.5rem;
